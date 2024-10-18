@@ -284,14 +284,38 @@ func replyToStatus(status *models.Status, response string) {
 	params := statuses.NewStatusCreateParams().
 		WithStatus(ptr(fullResponse)).
 		WithInReplyToID(ptr(status.ID)).
-		WithVisibility(ptr(status.Visibility)).
 		WithContentType(ptr("text/markdown")).
 		WithLanguage(ptr(status.Language)).
-		WithSensitive(ptr(status.Sensitive)).
-		WithLocalOnly(ptr(status.LocalOnly))
+		WithVisibility(ptr(status.Visibility)).
+		WithLocalOnly(ptr(status.LocalOnly)).
+		WithSensitive(ptr(status.Sensitive))
+
+	if status.InteractionPolicy != nil {
+		if len(status.InteractionPolicy.CanFavourite.Always) > 0 {
+			params.SetInteractionPolicyCanFavouriteAlways0(ptr(string(status.InteractionPolicy.CanFavourite.Always[0])))
+		}
+		if len(status.InteractionPolicy.CanFavourite.WithApproval) > 0 {
+			params.SetInteractionPolicyCanFavouriteWithApproval0(ptr(string(status.InteractionPolicy.CanFavourite.WithApproval[0])))
+		}
+		if len(status.InteractionPolicy.CanReblog.Always) > 0 {
+			params.SetInteractionPolicyCanReblogAlways0(ptr(string(status.InteractionPolicy.CanReblog.Always[0])))
+		}
+		if len(status.InteractionPolicy.CanReblog.WithApproval) > 0 {
+			params.SetInteractionPolicyCanReblogWithApproval0(ptr(string(status.InteractionPolicy.CanReblog.WithApproval[0])))
+		}
+		if len(status.InteractionPolicy.CanReply.Always) > 0 {
+			params.SetInteractionPolicyCanReplyAlways0(ptr(string(status.InteractionPolicy.CanReply.Always[0])))
+		}
+		if len(status.InteractionPolicy.CanReply.WithApproval) > 0 {
+			params.SetInteractionPolicyCanReplyWithApproval0(ptr(string(status.InteractionPolicy.CanReply.WithApproval[0])))
+		}
+	}
 
 	if status.Visibility == "public" {
 		params.SetVisibility(ptr("unlisted"))
+	}
+	if status.Visibility == "private" || status.Visibility == "mutuals_only" {
+		params.SetVisibility(ptr("direct"))
 	}
 	if status.SpoilerText != "" {
 		params.SpoilerText = ptr("re: " + status.SpoilerText)
