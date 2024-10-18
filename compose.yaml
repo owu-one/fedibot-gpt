@@ -1,0 +1,20 @@
+services:
+  chatgpt-mastodon:
+    image: ghcr.io/owu-one/fedibot-gpt:latest
+    environment:
+      OPENAI_API_KEY: sk-
+      OPENAI_API_URL: https://api.openai.com/v1
+      OPENAI_MODEL: gpt-4o
+      OPENAI_MODEL_EXTERNAL: gpt-4o-mini
+      FEDI_DOMAIN: 
+      CLIENT_KEY: 
+      CLIENT_SECRET: 
+      ACCESS_TOKEN: 
+      BOT_ACCOUNT_NAME: 
+      MAX_CHAR: 450
+      MAX_HISTORY_COUNT: 6
+      MAX_HISTORY_CHAR: 5000
+      SYSTEM_PROMPT: |
+        Hello, you, the AI, will be asked to reply to a user's inquiry on a social networking site this time.
+        There is a limit of 500 characters in a post, so you need to keep it under that.
+        It is also best to omit redundant explanations, as long posts will occupy the timeline. Let's be friendly.
