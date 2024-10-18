@@ -151,9 +151,16 @@ func buildChatHistory(stack []*models.Status) []Message {
 	}
 
 	for _, status := range reversedStack {
+		t := status.Text
+		if t == "" {
+			t = status.Content
+		}
+		if t == "" {
+			continue
+		}
 		statusText := ChatContent{
 			Type: "text",
-			Text: status.Text,
+			Text: t,
 		}
 		msg := Message{
 			Role: "user",
